@@ -57,6 +57,7 @@ def prepare_book_for_phase_2(book: pl.DataFrame,
     df = ob_imbalance(df)
     df = trade_imbalance(df, window_size=trade_imbalance_window_size)
     return df.select([
+        "ror_mid",
         "cum_return",
         "TradeImbalance",
         "imbalance",

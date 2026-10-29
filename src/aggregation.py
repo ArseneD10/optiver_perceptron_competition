@@ -1,7 +1,6 @@
 import torch
 from typing import Any
 from itertools import product
-from sklearn.model_selection import GridSearchCV
 
 def agg_mean(X: torch.Tensor):
     return X.mean(dim=-1, keepdim=True)
@@ -71,7 +70,7 @@ class ManualAggregation:
         out = torch.empty(size=new_shape, device=X.device)
         for i in range(M):
             out[..., i] = self.aggf[i](X)
-        return out, None, None # for consistency with VAE output
+        return out, None, None # same as VAE output
     
 
 class AggregationCombinator:
