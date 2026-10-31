@@ -30,16 +30,18 @@ def run_lobster_pipeline(book: pl.DataFrame,
     return X_train, X_valid, X_test, ror_index
 
 
-def prepare_book(df: pl.DataFrame):
+def prepare_book(df: pl.DataFrame, cov_window: int=30):
     df = mid_price(df)
     df = mid_return(df)
     df = ob_imbalance(df)
     df = spread(df)
     df = trade_imbalance(df)
+    df = get_lagged_cov(df, "ror_mid", "imbalance", cov_window)
     return df.select(
         ["ror_mid",
          "TradeImbalance",
          'imbalance',
+         "cov_ror_mid_imbalance",
          "spread"
          ]
     ), 0
@@ -105,6 +107,8 @@ def bar_aggregation(df: pl.DataFrame, window_size: int = 20) -> np.ndarray:
     sequence = [arr[i: i+window_size] for i in range(len(arr)-window_size)]
     return np.stack(sequence)
 
-def get_lagged_cov(df: pl.DataFrame, c1: str, c2: str):
+def get_lagged_cov(df: pl.DataFrame, c1: str, c2: str, window: int):
 
-    return
+    return df.with_columns(
+        pl.rolling_cov(pl.col(c1), pl.col(c2).shift(1), window_size=window).alias(f"cov_{c1}_{c2}")
+    )
