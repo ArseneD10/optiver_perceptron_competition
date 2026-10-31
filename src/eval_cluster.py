@@ -24,7 +24,7 @@ class ClusterEvaluator:
 
     def eval_persistance(self):
         # turnover / max_turnver
-        # since max_turnover is case where we have ABABA then the number is simply lenght/2
+        # since max_turnover is case where we have ABABA then the number is simply lenght-1
         # mean duration: 
         scores = {}
 
