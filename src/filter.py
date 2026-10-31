@@ -1,5 +1,5 @@
 import numpy as np
-from numpy.lib.stride_tricks import sliding_window_view
+from numpy.lib.stride_tricks import sliding_window_view  #@todo vectorize argmax_filter
 from scipy.stats import kstest
 
 
@@ -34,8 +34,6 @@ def get_centroid_distance(centroid: np.ndarray, latents: np.ndarray, vi: np.ndar
     return np.min(dist, axis=-1)
     
 def calibrate_tau(centroid: np.ndarray, latents: np.ndarray, vi: np.ndarray, quantile: float= 0.99):
-    # variable stats on
-    # proba of not being part of the distribution of cluster distance 
     dist = get_centroid_distance(centroid, latents, vi)
     tau = np.quantile(dist, q=quantile)
     return tau
